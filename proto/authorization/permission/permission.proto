@@ -1,0 +1,114 @@
+syntax = "proto3";
+package permission;
+import "proto/google/api/annotations.proto";
+
+option go_package = "xti-gateway-go/proto/authorization/permission";
+
+
+service Permission {
+    rpc Fetch(FetchRequestPermission) returns (FetchResponsePermission) {
+		option (google.api.http) = {
+          get: "/api/v1/auth/permission/fetch"
+        };
+	}
+	rpc Store(PermissionRequest) returns (MainResponsePermission) {
+		option (google.api.http) = {
+          post: "/api/v1/auth/permission/store"
+          body: "*"
+        };
+	}
+	rpc FindByID(FindByIDPermissionRequest) returns (MainResponsePermission) {
+		option (google.api.http) = {
+          get: "/api/v1/auth/permission/detail"
+        };
+	}
+	rpc Update(PermissionRequest) returns (MainResponsePermission) {
+		option (google.api.http) = {
+          put: "/api/v1/auth/permission/update"
+          body: "*"
+        };
+	}
+	rpc Delete(FindByIDPermissionRequest) returns (MainResponsePermission) {
+		option (google.api.http) = {
+          delete: "/api/v1/auth/permission/delete/{ID}"
+        };
+	}
+}
+
+
+message FetchRequestPermission {
+	int64 Limit = 1;
+	int64 Offset = 2;
+}
+
+message MainResponsePermission {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	PermissionResponse Data = 4;
+}
+
+message FetchResponsePermission {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	Permissions Data = 4;
+}
+
+message Permissions {
+	repeated PermissionResponse Items = 1;
+}
+
+message PermissionResponse {
+    string ID = 1;
+    string ParentPermissionID = 2;
+    string Name = 3;
+    string CreatedBy = 4;
+    string UpdatedBy = 5;
+    string CreatedAt = 6;
+    string UpdatedAt = 7;
+}
+
+message PermissionRequest {
+    string ID = 1;
+    string ParentPermissionID = 2;
+    string Name = 3;
+    string ModuleID = 4;
+    repeated PermissionOperationRequest Operations = 5;
+}
+
+message PermissionOperationRequest {
+    string OperationID = 1;
+}
+
+
+message FindByIDPermissionRequest {
+	string ID = 1;
+}
+
+message PermissionDetailResponse {
+	string ID = 1;
+	string ParentID = 2;
+	string RoleID = 3;
+	string RoleName = 4;
+	string ApplicationID = 5;
+    string Name = 6;
+	Module Module = 7;
+	repeated Operation Operations = 8;
+	repeated PermissionDetailResponse Permission = 9;
+}
+
+message Module {
+	string ID = 1;
+    string Name = 2;
+    string Path = 3;
+}
+
+message Operation {
+	string ID = 1;
+	string PermissionID = 2;
+	string Name = 3;
+    string URL = 4;
+    string Path = 5;
+    string Method = 6;
+}

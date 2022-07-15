@@ -1,0 +1,51 @@
+directive @OperationPermission on FIELD_DEFINITION
+input FetchRequestOperationPermissionInput {
+	limit: Int
+	offset: Int
+	permissionID: String
+	permissionIDs: [String!]
+}
+type FetchResponseOperationPermission {
+	isSuccess: Boolean
+	message: String
+	status: Int
+	data: OperationPermissions
+}
+input FindByIDOperationPermissionRequestInput {
+	iD: String
+}
+type MainResponseOperationPermission {
+	isSuccess: Boolean
+	message: String
+	status: Int
+	data: OperationPermissionResponse
+}
+type OperationPermissionMutation {
+	operationPermissionStore(in: OperationPermissionRequestInput): MainResponseOperationPermission
+	operationPermissionUpdate(in: OperationPermissionRequestInput): MainResponseOperationPermission
+	operationPermissionDelete(in: FindByIDOperationPermissionRequestInput): MainResponseOperationPermission
+}
+input OperationPermissionRequestInput {
+	iD: String
+	permissionID: String
+	operationID: String
+}
+type OperationPermissionResponse {
+	iD: String
+	permissionID: String
+	operationID: String
+	createdBy: String
+	updateBy: String
+	createdAt: String
+	updatedAt: String
+	operation: OperationResponse
+	permission: PermissionResponse
+}
+type OperationPermissions {
+	items: [OperationPermissionResponse!]
+}
+type OperationPermissionQuery {
+	operationPermissionFetch(in: FetchRequestOperationPermissionInput): FetchResponseOperationPermission
+	operationPermissionFindByID(in: FindByIDOperationPermissionRequestInput): MainResponseOperationPermission
+	dummy: Boolean
+}

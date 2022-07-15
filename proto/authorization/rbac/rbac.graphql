@@ -1,0 +1,88 @@
+directive @RBAC on FIELD_DEFINITION
+input FetchRequestRBACInput {
+	limit: Int
+	offset: Int
+	roleID: String
+}
+type FetchResponseRBAC {
+	isSuccess: Boolean
+	message: String
+	status: Int
+	data: RBACResponses
+}
+input FindByIDRBACRequestInput {
+	roleID: String
+}
+type MainResponseRBAC {
+	isSuccess: Boolean
+	message: String
+	status: Int
+	data: RBACResponse
+}
+type Module {
+	iD: String
+	name: String
+	path: String
+}
+type RBACMutation {
+	rBACStore(in: RBACRequestInput): MainResponseRBAC
+}
+type Operation {
+	iD: String
+	permissionID: String
+	name: String
+	uRL: String
+	path: String
+	method: String
+}
+type PermissionDetailResponse {
+	iD: String
+	parentID: String
+	roleID: String
+	roleName: String
+	applicationID: String
+	name: String
+	module: Module
+	operations: [Operation!]
+	permission: [PermissionDetailResponse!]
+}
+type RBACQuery {
+	rBACFetch(in: FetchRequestRBACInput): FetchResponseRBAC
+	rBACDetail(in: FindByIDRBACRequestInput): MainResponseRBAC
+	dummy: Boolean
+}
+type RBACApplication {
+	iD: String
+	name: String
+	icon: String
+	status: String
+	accessControl: RBACRoles
+}
+input RBACPermissionRequestInput {
+	permissionID: String
+}
+input RBACRequestInput {
+	iD: String
+	name: String
+	applicationID: String
+	applicationName: String
+	roleID: String
+	roleName: String
+	permissions: [RBACPermissionRequestInput!]
+}
+type RBACResponse {
+	application: [RBACApplication!]
+}
+type RBACResponses {
+	items: [RBACResponse!]
+}
+type RBACRoles {
+	iD: String
+	roleID: String
+	roleName: String
+	createdBy: String
+	updateBy: String
+	createdAt: String
+	updateAt: String
+	permission: [PermissionDetailResponse!]
+}

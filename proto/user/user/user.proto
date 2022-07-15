@@ -1,0 +1,228 @@
+syntax = "proto3";
+
+package user;
+
+import "proto/user/account/account.proto";
+import "proto/user/company/company.proto";
+import "proto/common/common.proto";
+import "proto/google/api/annotations.proto";
+
+option go_package = "xti-gateway-go/proto/user/user";
+
+service User {
+	rpc Call(CallRequest) returns (CallResponse) {
+		option (google.api.http) = {
+          post: "/api/v1/user/user/call",
+          body: "*"
+        };
+	}
+	// rpc ClientStream(stream ClientStreamRequest) returns (ClientStreamResponse) {
+		// option (google.api.http) = {
+        //   delete: "/api/v1/user/user/delete",
+        //   body: "*"
+        // };
+	// }
+	// rpc ServerStream(ServerStreamRequest) returns (stream ServerStreamResponse) {
+		// option (google.api.http) = {
+        //   delete: "/api/v1/user/user/delete",
+        //   body: "*"
+        // };
+	// }
+	// rpc BidiStream(stream BidiStreamRequest) returns (stream BidiStreamResponse) {
+		// option (google.api.http) = {
+        //   delete: "/api/v1/user/user/delete",
+        //   body: "*"
+        // };
+	// }
+	rpc Store(UserRequest) returns (MainResponse) {
+		option (google.api.http) = {
+          post: "/api/v1/user/user/store",
+          body: "*"
+        };
+	}
+	rpc Fetch(common.FetchRequest) returns (FetchResponse) {
+		option (google.api.http) = {
+          get: "/api/v1/user/user/fetch"
+        };
+	}
+	rpc FindByID(FindByIDRequest) returns (MainResponse) {
+		option (google.api.http) = {
+          get: "/api/v1/user/user/detail"
+        };
+	}
+	rpc Update(UserUpdateRequest) returns (MainResponse) {
+		option (google.api.http) = {
+          put: "/api/v1/user/user/update",
+          body: "*"
+        };
+	}
+	rpc Delete(FindByIDRequest) returns (MainResponse) {
+		option (google.api.http) = {
+          delete: "/api/v1/user/user/delete/{ID}"
+        };
+	}
+}
+
+
+message CallRequest {
+	string name = 1;
+}
+
+message CallResponse {
+	string msg = 1;
+}
+
+message ClientStreamRequest {
+	int64 stroke = 1;
+}
+
+message ClientStreamResponse {
+	int64 count = 1;
+}
+
+message ServerStreamRequest {
+	int64 count = 1;
+}
+
+message ServerStreamResponse {
+	int64 count = 1;
+}
+
+message BidiStreamRequest {
+	int64 stroke = 1;
+}
+
+message BidiStreamResponse {
+	int64 stroke = 1;
+}
+
+message FetchRequest {
+	int64 Limit = 1;
+	int64 Offset = 2;
+}
+
+message UserUpdateRequest {
+	string ID = 1 ;
+	string Username = 3;
+	string FirstName = 4;
+	string LastName = 5;
+	string IDNumber = 6;
+	string Department = 7;
+	string Position = 8;
+	string RoleID = 9 ;
+	string RoleName = 10;
+	string Phone = 14;
+	string Grade = 19 ;
+}
+
+message UserRequest {
+	string ID = 1;
+	string Username = 2;
+	string CompanyID = 3;
+	string FirstName = 4;
+	string LastName = 5;
+	string IDNumber = 6;
+	string Department = 7;
+	string Position = 8;
+	string RoleID = 9 ;
+	string RoleName = 10;
+	string Email = 11 ;
+	string Password = 12 ;
+	string ConfirmPassword = 13 ;
+	string Phone = 14;
+	string FcmID = 15 ;
+	string GoogleID = 16 ;
+	string FacebookID = 17 ;
+	string AppleID = 18 ;
+	string Grade = 19 ;
+	bool IsAD = 20;
+}
+
+message Data {
+	string ID = 1;
+	string CompanyID = 2;
+	string Username = 3;
+	string FirstName = 4;
+	string LastName = 5;
+	string IDNumber = 6;
+	string Phone = 7;
+	string Department = 8;
+	string Position = 9;
+	string RoleID = 10;
+	string RoleName = 11;
+	account.Data Account = 12;
+	company.Data Company = 13;
+	string Grade = 14;
+	string CreatedAt = 15;
+	string UpdatedAt = 16;
+	string CreatedBy =  17;
+	string UpdatedBy =  18;
+}
+
+message Users {
+	repeated Data Items = 1;
+}
+
+message FindByIDRequest {
+	string ID = 1 ;
+}
+
+message FetchResponse {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	Users Data = 4;
+	FetchRequest Metadata = 5;
+}
+
+message MainResponse {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	Data Data = 4;
+}
+
+message UpdateEmailRequest {
+	string ID = 1 ;
+	string Email = 2 ;
+}
+
+message UpdateEmailResponse {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	UpdateEmailRequest Data = 4;
+}
+
+message UpdateRequest {
+	string ID = 1 ;
+	string Username = 2;
+	string FirstName = 3;
+	string LastName = 4;
+	string IDNumber = 5;
+	string Phone = 6;
+	string Department = 7;
+	string Position = 8;
+	string RoleID = 9 ;
+	string RoleName = 10;
+}
+
+message SyncRequest {
+	string CompanyID = 1 ;
+	string Department = 2;
+	string Position = 3; 
+}
+
+message SyncResponse {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	Syncs Data = 4;
+}
+
+message Syncs {
+	int64 TotalNewUser = 1;
+	int64 TotalUpdateUser = 2;
+	repeated string NewUser = 3;
+	repeated string UpdateUser = 4;
+}

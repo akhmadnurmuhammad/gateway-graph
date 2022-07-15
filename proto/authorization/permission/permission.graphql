@@ -1,0 +1,53 @@
+directive @Permission on FIELD_DEFINITION
+input FetchRequestPermissionInput {
+	limit: Int
+	offset: Int
+}
+type FetchResponsePermission {
+	isSuccess: Boolean
+	message: String
+	status: Int
+	data: Permissions
+}
+input FindByIDPermissionRequestInput {
+	iD: String
+}
+type MainResponsePermission {
+	isSuccess: Boolean
+	message: String
+	status: Int
+	data: PermissionResponse
+}
+type PermissionMutation {
+	permissionStore(in: PermissionRequestInput): MainResponsePermission
+	permissionUpdate(in: PermissionRequestInput): MainResponsePermission
+	permissionDelete(in: FindByIDPermissionRequestInput): MainResponsePermission
+}
+input PermissionOperationRequestInput {
+	operationID: String
+}
+input PermissionRequestInput {
+	iD: String
+	parentPermissionID: String
+	name: String
+	moduleID: String
+	operations: [PermissionOperationRequestInput!]
+}
+type PermissionResponse {
+	iD: String
+	parentPermissionID: String
+	name: String
+	createdBy: String
+	updatedBy: String
+	createdAt: String
+	updatedAt: String
+}
+type Permissions {
+	items: [PermissionResponse!]
+}
+type PermissionQuery {
+	permissionFetch(in: FetchRequestPermissionInput): FetchResponsePermission
+	permissionFindByID(in: FindByIDPermissionRequestInput): MainResponsePermission
+	
+	dummy: Boolean
+}

@@ -1,0 +1,87 @@
+syntax = "proto3";
+
+import "proto/authorization/operation/operation.proto";
+import "proto/authorization/permission/permission.proto";
+import "proto/google/api/annotations.proto";
+package operation_permission;
+
+option go_package = "xti-gateway-go/proto/authorization/operation_permission";
+
+service OperationPermission {
+    rpc Fetch(FetchRequestOperationPermission) returns (FetchResponseOperationPermission) {
+		option (google.api.http) = {
+          get: "/api/v1/auth/operation-permission/fetch"
+        };
+	}
+	rpc Store(OperationPermissionRequest) returns (MainResponseOperationPermission) {
+		option (google.api.http) = {
+          post: "/api/v1/auth/operation-permission/store",
+          body: "*"
+        };
+	}
+	rpc FindByID(FindByIDOperationPermissionRequest) returns (MainResponseOperationPermission) {
+		option (google.api.http) = {
+          get: "/api/v1/auth/operation-permission/detail"
+        };
+	}
+	rpc Update(OperationPermissionRequest) returns (MainResponseOperationPermission) {
+		option (google.api.http) = {
+          put: "/api/v1/auth/operation-permission/update",
+          body: "*"
+        };
+	}
+	rpc Delete(FindByIDOperationPermissionRequest) returns (MainResponseOperationPermission) {
+		option (google.api.http) = {
+          delete: "/api/v1/auth/operation-permission/delete/{ID}"
+        };
+	}
+}
+
+
+message FetchRequestOperationPermission {
+	int64 Limit = 1;
+	int64 Offset = 2;
+	string PermissionID = 3;
+	repeated string PermissionIDs = 4;
+}
+
+message MainResponseOperationPermission {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	OperationPermissionResponse Data = 4;
+}
+
+message FetchResponseOperationPermission {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	OperationPermissions Data = 4;
+}
+
+message OperationPermissions {
+	repeated OperationPermissionResponse Items = 1;
+}
+
+message OperationPermissionResponse {
+    string ID = 1;
+    string PermissionID = 2;
+    string OperationID = 3;
+    string CreatedBy = 4;
+    string UpdateBy = 5;
+    string CreatedAt = 6;
+    string UpdatedAt = 7;
+    operation.OperationResponse Operation = 8;
+    permission.PermissionResponse Permission = 9;
+}
+
+message OperationPermissionRequest {
+    string ID = 1;
+    string PermissionID = 2;
+    string OperationID = 3;
+}
+
+
+message FindByIDOperationPermissionRequest {
+	string ID = 1;
+}

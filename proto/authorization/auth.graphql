@@ -1,0 +1,94 @@
+directive @Auth on FIELD_DEFINITION
+"""
+ Account provided by an auth provider
+
+"""
+type Account {
+	"""
+	 ID of the account e.g. email
+	
+	"""
+	iD: String
+	"""
+	 Type of the account, e.g. service
+	
+	"""
+	type: String
+	"""
+	 Issuer of the account
+	
+	"""
+	issuer: String
+	"""
+	 Any other associated metadata
+	
+	"""
+	metadata: Metadata
+	"""
+	 Scopes the account has access to
+	 repeated Scope Scopes = 5;
+	 Secret for the account, e.g. the password
+	
+	"""
+	secret: String
+	"""
+	 token details
+	
+	"""
+	token: Token
+}
+input LoginRequestInput {
+	clientKey: String
+	secretKey: String
+}
+type LoginResponse {
+	isSuccess: Boolean
+	message: String
+	status: Int
+	data: Account
+}
+type Metadata {
+	iD: String
+	companyID: String
+	companyName: String
+	companyCode: String
+	clientKey: String
+	secretKey: String
+	platform: String
+	scope: String
+	status: Boolean
+	createdAt: String
+	updatedAt: String
+}
+type AuthMutation {
+	authLogin(in: LoginRequestInput): LoginResponse
+}
+type Authuery {
+	dummy: Boolean
+}
+"""
+ Token can be short or long lived
+
+"""
+type Token {
+	"""
+	 The token to be used for accessing resources
+	
+	"""
+	accessToken: String
+	"""
+	 RefreshToken to be used to generate a new token
+	
+	"""
+	refreshToken: String
+	"""
+	 Time of token creation
+	
+	"""
+	created: Int
+	"""
+	 Time of token expiry
+	
+	"""
+	expiry: Int
+}

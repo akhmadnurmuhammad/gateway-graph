@@ -1,0 +1,126 @@
+
+syntax = "proto3";
+
+package role;
+
+option go_package = "xti-gateway-go/proto/roles/role";
+
+import "proto/google/api/annotations.proto";
+
+
+service Role {
+	rpc Store(RoleRequest) returns  (MainResponse) {
+        option (google.api.http) =  {
+            post : "/api/v1/roles/role/store"
+            body : "*"
+        };
+    }
+	rpc Fetch(FetchRequest) returns (FetchResponse) {
+        option (google.api.http) =  {
+            get : "/api/v1/roles/role/fetch"
+        };
+    }
+	rpc FindByID(FindByIDRequest) returns (MainResponse) {
+        option (google.api.http) =  {
+            get : "/api/v1/roles/role/detail"
+        };
+    }
+	rpc Update(RoleRequest) returns (MainResponse) {
+        option (google.api.http) =  {
+            put : "/api/v1/roles/role/update"
+            body : "*"
+        };
+    }
+	rpc Delete(FindByIDRequest) returns (MainResponse) {
+        option (google.api.http) =  {
+            delete : "/api/v1/roles/role/delete/{ID}"
+        };
+    }
+    rpc UpdateActive (FindByIDRequest) returns (MainResponse)  {
+        option (google.api.http) =  {
+            put : "/api/v1/roles/role/update-active"
+            body : "*"
+        };
+    }
+}
+
+message CallRequest {
+	string name = 1; 
+}
+
+message CallResponse {
+	string msg = 1;
+}
+
+message ClientStreamRequest {
+	int64 stroke = 1;
+}
+
+message ClientStreamResponse {
+	int64 count = 1;
+}
+
+message ServerStreamRequest {
+	int64 count = 1;
+}
+
+message ServerStreamResponse {
+	int64 count = 1;
+}
+
+message BidiStreamRequest {
+	int64 stroke = 1;
+}
+
+message BidiStreamResponse {
+	int64 stroke = 1;
+}
+
+message FetchRequest {
+	int64 Limit = 1 ;
+	int64 Offset = 2;
+}
+
+message RoleRequest {
+	string ID = 1 ;
+	string Name = 2 ;
+	bool IsActive = 3 ;
+	string CreatedBy = 4 ;
+	string UpdateBy = 5; 
+	string CreatedAt = 6 ;
+	string UpdatedAt = 7;
+}
+
+message RoleResponse {
+	string ID = 1;
+	string Name = 2;
+	bool IsActive = 3;
+	string CreatedBy = 4;
+	string UpdateBy = 5;
+	string CreatedAt = 6;
+	string UpdatedAt = 7;
+    string DeletedAt = 8;
+}
+
+message RolesResponse {
+	repeated RoleResponse Items = 1;
+}
+
+message FindByIDRequest {
+	string ID = 1 ;
+}
+
+message FetchResponse {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	RolesResponse Data = 4;
+	FetchRequest Metadata = 5;
+}
+
+message MainResponse {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	RoleResponse Data = 4;
+}

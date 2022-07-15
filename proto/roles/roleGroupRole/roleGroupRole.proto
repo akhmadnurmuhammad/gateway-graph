@@ -1,0 +1,121 @@
+syntax = "proto3";
+
+package role_group_role;
+
+option go_package = "xti-gateway-go/proto/roles/role_group_roles";
+
+import "proto/google/api/annotations.proto";
+
+
+
+service RoleGroupRoles {
+	rpc Store(RoleGroupRoleRequest) returns (MainResponse) {
+        option (google.api.http) =  {
+            post : "/api/v1/roles/role-group-role/store"
+            body : "*"
+        };
+    }
+	rpc Fetch(FetchRequest) returns (FetchResponse) {
+        option (google.api.http) =  {
+            get : "/api/v1/roles/role-group-role/fetch"
+        };
+    }
+	rpc FindByID(FindByIDRequest) returns (MainResponse) {
+        option (google.api.http) =  {
+            get : "/api/v1/roles/role-group-role/detail"
+        };
+    }
+	rpc Update(RoleGroupRoleRequest) returns (MainResponse) {
+        option (google.api.http) =  {
+            put : "/api/v1/roles/role-group-role/update"
+            body : "*"
+        };
+    }
+	rpc Delete(FindByIDRequest) returns (MainResponse) {
+        option (google.api.http) =  {
+            delete : "/api/v1/roles/role-group-role/delete/{ID}"
+        };
+    }
+}
+
+message CallRequest {
+	string name = 1;
+}
+
+message CallResponse {
+	string msg = 1;
+}
+
+message ClientStreamRequest {
+	int64 stroke = 1;
+}
+
+message ClientStreamResponse {
+	int64 count = 1;
+}
+
+message ServerStreamRequest {
+	int64 count = 1;
+}
+
+message ServerStreamResponse {
+	int64 count = 1;
+}
+
+message BidiStreamRequest {
+	int64 stroke = 1;
+}
+
+message BidiStreamResponse {
+	int64 stroke = 1;
+}
+
+message FetchRequest {
+	int64 Limit = 1  ;
+	int64 Offset = 2  ;
+}
+
+message RoleGroupRoleRequest {
+	string ID = 1 ;
+	string RoleID = 2 ;
+    string RoleGroupID = 3 ;
+	string CreatedBy = 4  ;
+	string CreatedAt = 5;
+}
+
+message RoleGroupRoleResponse {
+	string ID = 1;
+	string RoleID = 2;
+    string RoleGroupID = 3;
+	bool IsActive = 4;
+	string CreatedBy = 5;
+	string UpdateBy = 6;
+	string CreatedAt = 7;
+	string UpdatedAt = 8;
+    string DeletedAt = 9;
+}
+
+message RoleGroupRolesResponse {
+	repeated RoleGroupRoleResponse Items = 1;
+}
+
+message FindByIDRequest {
+	string ID = 1  ;
+}
+
+message FetchResponse {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	RoleGroupRolesResponse Data = 4;
+	FetchRequest Metadata = 5;
+}
+
+message MainResponse {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	RoleGroupRoleResponse Data = 4;
+}
+
+

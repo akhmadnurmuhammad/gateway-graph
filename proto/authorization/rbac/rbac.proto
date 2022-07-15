@@ -1,0 +1,100 @@
+syntax = "proto3";
+
+import "proto/authorization/permission/permission.proto";
+import "proto/google/api/annotations.proto";
+
+package rbac;
+
+option go_package = "xti-gateway-go/proto/authorization/rbac";
+
+
+service RBAC {
+    rpc Fetch(FetchRequestRBAC) returns (FetchResponseRBAC) {
+        option (google.api.http) = {
+          get: "/api/v1/auth/rbac/fetch"
+        };
+    }
+	rpc Store(RBACRequest) returns (MainResponseRBAC) {
+        option (google.api.http) = {
+          post: "/api/v1/auth/rbac/store"
+          body: "*"
+        };
+    }
+	rpc Detail(FindByIDRBACRequest) returns (MainResponseRBAC) {
+        option (google.api.http) = {
+          get: "/api/v1/auth/rbac/detail"
+        };
+    }
+}
+
+
+message FetchRequestRBAC {
+	int64 Limit = 1;
+	int64 Offset = 2;
+    string RoleID = 3;
+}
+
+message MainResponseRBAC {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+
+	RBACResponse Data = 4;
+}
+
+message FetchResponseRBAC {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+    
+	RBACResponses Data = 4;
+}
+
+message RBACResponses {
+    repeated RBACResponse Items = 1;
+
+}
+
+message RBACRoles {
+    string ID = 1;
+    string RoleID = 2;
+    string RoleName = 3;
+    string CreatedBy = 4;
+    string UpdateBy = 5;
+    string CreatedAt = 6;
+    string UpdateAt = 7;
+
+    repeated permission.PermissionDetailResponse Permission = 8; 
+}
+
+message RBACResponse {
+    repeated RBACApplication Application = 1;
+}
+
+message RBACApplication {
+    string ID = 1;
+    string Name = 2;
+    string Icon = 3;
+    string Status = 4;
+
+    RBACRoles AccessControl = 5;    
+}
+
+message RBACRequest {
+    string ID = 1;
+    string Name = 2;
+    string ApplicationID = 3;
+    string ApplicationName = 4;
+    string RoleID = 5;
+    string RoleName = 6;
+    repeated RBACPermissionRequest Permissions = 7;
+}
+
+message RBACPermissionRequest {
+    string PermissionID = 1;
+}
+
+
+message FindByIDRBACRequest {
+	string RoleID = 1;
+}

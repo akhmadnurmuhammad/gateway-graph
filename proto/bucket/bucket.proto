@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package bucket;
+
+option go_package = "xti-gateway-go/proto/bucket";
+import "proto/google/api/annotations.proto";
+
+service Bucket {
+	rpc Upload(stream UploadRequest) returns (UploadResponse) {
+        option (google.api.http) =  {
+            post : "/api/v1/bucket/image/upload"
+            body : "*"
+        };
+    }
+	rpc BatchUpload(stream BatchUploadRequest) returns (BatchUploadResponse) {
+        option (google.api.http) =  {
+            post : "/api/v1/bucket/image/batch-upload"
+            body : "*"
+        };
+    }
+	rpc UploadAsync(stream BatchUploadRequest) returns (UploadResponse) {
+        option (google.api.http) =  {
+            post : "/api/v1/bucket/image/async-upload"
+            body : "*"
+        };
+    }
+}
+
+message Data {
+    string ID = 1;
+	string BucketName = 2;   
+	string URL = 3;
+	string FileLocation = 4; 
+	string Provider = 5;     
+	string CreatedAt = 6;    
+	string UpdatedAt = 7;    
+	string CreatedBy = 8; 
+	string UpdatedBy = 9;
+	string DeletedAt= 10;
+}
+
+message UploadRequest {
+    string MimeType = 1;
+    bytes ChunkData = 2;
+    string Issuer = 3;
+    string ReferenceID = 4;
+    string FileLocation = 5;
+}
+
+message BatchUploadRequest {
+    repeated UploadRequest Data = 1;
+}
+
+message UploadResponse {
+    bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	Data Data = 4;
+}
+
+message BatchUploadResponse {
+    bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	repeated Data Data = 4;
+}

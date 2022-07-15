@@ -1,0 +1,32 @@
+schema:
+# - "proto/authorization/module/*.graphql"
+- "proto/authorization/operation/*.graphql"
+# - "proto/authorization/permission/*.graphql"
+# - "proto/authorization/module_permission/*.graphql"
+# - "proto/authorization/operation_permission/*.graphql"
+# - "proto/authorization/rbac/*.graphql"
+# - "proto/authorization/*.graphql"
+exec:
+  filename: graph/authorization/operation/generated.go
+  package: operation
+model:
+  filename: graph/authorization/operation/model/generated.go
+  package: operation
+resolver:
+  layout: follow-schema
+  dir: graph/resolver
+  package: resolver
+autobind: []
+
+models:
+  ID:
+    model:
+      - github.com/99designs/gqlgen/graphql.ID
+      - github.com/99designs/gqlgen/graphql.Int
+      - github.com/99designs/gqlgen/graphql.Int64
+      - github.com/99designs/gqlgen/graphql.Int32
+  Int:
+    model:
+      - github.com/99designs/gqlgen/graphql.Int
+      - github.com/99designs/gqlgen/graphql.Int64
+      - github.com/99designs/gqlgen/graphql.Int32

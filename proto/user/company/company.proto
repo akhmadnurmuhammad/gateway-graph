@@ -1,0 +1,82 @@
+syntax = "proto3";
+
+package company;
+
+import "proto/google/api/annotations.proto";
+option go_package = "xti-gateway-go/proto/user/company;company";
+
+service Company {
+	rpc Update(UpdateRequest) returns (MainResponse) {
+        option (google.api.http) = {
+          put: "/api/v1/user/company/update",
+          body: "*"
+        };
+    }
+	rpc Delete(FindByIDRequest) returns (DeleteResponse) {
+        option (google.api.http) = {
+          delete: "/api/v1/user/company/delete/{ID}"
+        };
+    }
+}
+
+message Data {
+    string ID = 1;
+    string Name = 2;
+    string Code = 3;
+    string RegisterNumber = 4;
+    string Phone = 5;
+    string Email = 6;
+    string Address = 7;
+    string PicName = 8;
+    string PicNumber = 9;
+    string PicEmail = 10;
+    string Country = 11;
+    string City = 12;
+    bool Status = 13;
+    string CreatedBy = 14;
+    string UpdatedBy = 15;
+    string CreatedAt = 16;
+    string UpdatedAt = 17;
+}
+
+message UpdateRequest {
+    string ID = 1;
+    string Name = 2;
+    string Code = 3;
+    string RegisterNumber = 4;
+    string Phone = 5 ;
+    string Email = 6;
+    string Address = 7;
+    string PicName = 8;
+    string PicNumber = 9;
+    string PicEmail = 10;
+    string Country = 11;
+    string City = 12;
+    string Status = 13;
+}
+
+message MainResponse {
+    bool IsSuccess = 1;
+    string Message = 2;
+    Data Data = 3;
+    int64 Status = 4; 
+}
+
+message FindByIDRequest {
+    string ID  = 1;
+}
+
+message DeleteResponse {
+
+}
+
+message FetchResponse {
+    bool IsSuccess = 1;
+    string Message = 2;
+    Companies Data = 3;
+    int64 Status = 4; 
+}
+
+message Companies {
+    repeated Data Items = 1;
+}

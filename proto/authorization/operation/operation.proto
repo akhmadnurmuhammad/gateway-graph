@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+package operation;
+import "proto/google/api/annotations.proto";
+option go_package = "xti-gateway-go/proto/authorization/operation";
+
+
+service Operation {
+    rpc Fetch(FetchRequestOperation) returns (FetchResponseOperation) {
+        option (google.api.http) = {
+          get: "/api/v1/auth/operation/fetch"
+        };
+    }
+	rpc Store(OperationRequest) returns (MainResponseOperation) {
+        option (google.api.http) = {
+          post: "/api/v1/auth/operation/store"
+          body: "*"
+        };
+    }
+	rpc FindByID(FindByIDOperationRequest) returns (MainResponseOperation) {
+        option (google.api.http) = {
+          get: "/api/v1/auth/operation/detail"
+        };
+    }
+	rpc Update(OperationRequest) returns (MainResponseOperation) {
+        option (google.api.http) = {
+          put: "/api/v1/auth/operation/update"
+          body: "*"
+        };
+    }
+	rpc Delete(FindByIDOperationRequest) returns (MainResponseOperation) {
+        option (google.api.http) = {
+          delete: "/api/v1/auth/operation/delete/{ID}"
+        };
+    }
+}
+
+
+message FetchRequestOperation {
+	int64 Limit = 1;
+	int64 Offset = 2;
+}
+
+message MainResponseOperation {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	OperationResponse Data = 4;
+}
+
+message FetchResponseOperation {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	Operations Data = 4;
+}
+
+message Operations {
+    repeated OperationResponse Items = 1;
+}
+
+message OperationResponse {
+    string ID = 1;
+    string Name = 2;
+    string Url = 3;
+    string Path = 4;
+    string Method = 5;
+    string CreatedBy = 6;
+    string UpdatedBy = 7;
+    string CreatedAt = 8;
+    string UpdatedAt = 9;
+}
+
+message OperationRequest {
+    string ID = 1;
+    string Name = 2;
+    string Url = 3;
+    string Path = 4;
+    string Method = 5;
+}
+
+
+message FindByIDOperationRequest {
+	string ID = 1;
+}

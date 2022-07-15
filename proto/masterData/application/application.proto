@@ -1,0 +1,141 @@
+
+syntax = "proto3";
+
+package application;
+
+option go_package = "xti-gateway-go/proto/masterData/application";
+
+import "proto/google/api/annotations.proto";
+
+service Application {
+	rpc Store(MasterRequest) returns  (MainResponse) {
+        option (google.api.http) =  {
+            post : "/api/v1/master-data/application/store"
+            body : "*"
+        };
+    }
+	rpc Fetch(FetchRequest) returns (FetchResponse) {
+        option (google.api.http) =  {
+            get : "/api/v1/master-data/application/fetch"
+        };
+    }
+	rpc FindByID(FindByIDRequest) returns (MainResponse) {
+        option (google.api.http) =  {
+            get : "/api/v1/master-data/application/detail"
+        };
+    }
+	rpc Update(UpdateRequest) returns (MainResponse) {
+        option (google.api.http) =  {
+            put : "/api/v1/master-data/application/update"
+            body : "*"
+        };
+    }
+	rpc Delete(FindByIDRequest) returns (MainResponse) {
+        option (google.api.http) =  {
+            delete : "/api/v1/master-data/application/delete/{ID}"
+        };
+    }
+    rpc UpdateActive (FindByIDRequest) returns (MainResponse)  {
+        option (google.api.http) =  {
+            put : "/api/v1/master-data/application/update-active"
+            body : "*"
+        };
+    }
+}
+
+message CallRequest {
+	string name = 1; 
+}
+
+message CallResponse {
+	string msg = 1;
+}
+
+message ClientStreamRequest {
+	int64 stroke = 1;
+}
+
+message ClientStreamResponse {
+	int64 count = 1;
+}
+
+message ServerStreamRequest {
+	int64 count = 1;
+}
+
+message ServerStreamResponse {
+	int64 count = 1;
+}
+
+message BidiStreamRequest {
+	int64 stroke = 1;
+}
+
+message BidiStreamResponse {
+	int64 stroke = 1;
+}
+
+message FetchRequest {
+	int64 Limit = 1  ;
+	int64 Offset = 2 ;
+}
+
+message MasterRequest {
+	string ID = 1  ;
+	string CompanyID = 2;
+	string Name = 3 ;
+	string Icon = 4;
+	bool   Status = 5;
+	string CreatedBy = 6 ;
+	string UpdateBy = 7 ;
+	string CreatedAt = 8 ;
+	string UpdatedAt = 9;
+}
+
+
+message UpdateRequest {
+	string ID = 1  ;
+	string CompanyID = 2;
+	string Name = 3 ;
+	string Icon = 4;
+	bool   Status = 5;
+	string UpdateBy = 6 ;
+	string UpdatedAt = 7;
+}
+
+
+message MasterResponse {
+	string ID = 1  ;
+	string CompanyID = 2;
+	string Name = 3 ;
+	string Icon = 4;
+	bool   Status = 5;
+	string CreatedBy = 6 ;
+	string UpdateBy = 7 ;
+	string CreatedAt = 8 ;
+	string UpdatedAt = 9;
+}
+
+message MastersResponse {
+	repeated MasterResponse Items = 1;
+}
+
+message FindByIDRequest {
+	string ID = 1 ;
+	string UpdatedBy = 2;
+}
+
+message FetchResponse {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	MastersResponse Data = 4;
+	FetchRequest Metadata = 5;
+}
+
+message MainResponse {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	MasterResponse Data = 4;
+}

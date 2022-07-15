@@ -1,0 +1,290 @@
+syntax = "proto3";
+
+package account;
+
+import "proto/authorization/rbac/rbac.proto";
+import "proto/google/api/annotations.proto";
+
+option go_package = "xti-gateway-go/proto/user/account;account";
+
+service Account {
+	rpc UpdateEmail(UpdateEmailRequest) returns (UpdateEmailResponse) {
+        option (google.api.http) = {
+          put: "/api/v1/user/account/update-email",
+          body: "*"
+        };
+    }
+	rpc UpdatePassword(UpdatePasswordRequest) returns (UpdatePasswordResponse) {
+        option (google.api.http) = {
+          put: "/api/v1/user/account/update-password",
+          body: "*"
+        };
+    }
+	rpc UpdateActive(UpdateActiveRequest) returns (UpdateActiveResponse) {
+        option (google.api.http) = {
+          put: "/api/v1/user/account/update-active",
+          body: "*"
+        };
+    }
+	rpc ResetPassword(ResetPasswordRequest) returns (ResetPasswordResponse) {
+        option (google.api.http) = {
+          post: "/api/v1/user/account/reset-password",
+          body: "*"
+        };
+    }
+	rpc PasswordReset(PasswordResetRequest) returns (PasswordResetResponse) {
+        option (google.api.http) = {
+          post: "/api/v1/user/account/password-reset",
+          body: "*"
+        };
+    }
+	rpc Login(LoginRequest) returns (LoginResponse) {
+        option (google.api.http) = {
+            post: "/api/v1/user/account/login",
+            body: "*"
+        };
+    }
+}
+
+message Data {
+    string ID = 1;
+    string UserID = 2;
+    string Email = 3;
+    string Password = 4;
+    string TempPassword = 5;
+    bool Status = 6;
+    string ActiveAt = 7;
+    string ResetAt = 8;
+    string ResetHash = 9;
+    string FcmID = 10;
+    string GoogleID = 11;
+    string FacebookID = 12;
+    string AppleID = 13;
+    string ActivateToken = 14;
+    bool IsAD = 15;
+    string CreatedAt = 16;
+    string UpdatedAt = 17;
+	User User = 18;
+}
+
+message User {
+	string ID = 1;
+	string CompanyID = 2;
+	string FirstName = 3;
+	string LastName = 4;
+	string IDNumber = 5;
+	string Phone = 6;
+	string Department = 7;
+	string Position = 8;
+	string RoleID = 9;
+	string RoleName = 10;
+	string Grade = 13;
+	string CreatedAt = 14;
+	string UpdatedAt = 15;
+}
+
+message UpdateEmailRequest {
+    string ID = 1;
+    string Email = 2;
+}
+
+message UpdateEmailResponse {
+    bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	Data Data = 4;
+}
+
+message UpdatePasswordRequest {
+	string ID = 1;
+	string OldPassword = 2;
+	string NewPassword = 3;
+	string NewPasswordConfirmation = 4;
+}
+
+message UpdatePasswordResponse {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	UpdatePasswordResponseItem Data = 4;
+}
+
+message UpdatePasswordResponseItem {
+
+}
+
+message UpdateActiveRequest {
+	string ID = 1 ;
+	string ActivateToken = 2;
+	string Email = 3;
+}
+
+message UpdateActiveResponse {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	UpdateActiveRequest Data = 4;
+}
+
+message ResetPasswordRequest {
+	string Email = 1;
+}
+
+message ResetPasswordResponse {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	Data Data = 4;
+}
+
+message PasswordResetRequest {
+	string ID = 1;
+	string ResetToken = 2;
+	string Email = 3;
+}
+
+message PasswordResetResponse {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	PasswordResetResponseItem Data = 4;
+}
+
+message PasswordResetResponseItem {
+	string NewPassword = 1;
+}
+
+message LoginRequest {
+	string Email = 1;
+	string Password = 2;
+}
+
+message LoginResponse {
+
+    message Metadata {
+        string ID = 1;
+        string CompanyID = 2;
+        string CompanyName = 3;
+        string CompanyCode = 4;
+        string ClientKey = 5;
+        string SecretKey = 6;
+        string Platform = 7;
+        string Scope = 8;
+        bool Status = 9;
+        string CreatedAt = 10;
+        string UpdateAt = 11;
+    }
+
+    message Token {
+        string AccessToken = 1;
+        string RefreshToken = 2;
+        int64 Created = 3;
+        int64 Expiry = 4;
+    }
+
+    message Rolegroup {
+        string ID = 1;
+        string Name = 2;
+    }
+
+    message Role1 {
+        string ID = 1;
+		string Name = 2;
+		Rolegroup RoleGroup = 3;
+    }
+
+    message Company1 {
+        string ID = 1;
+        string Name = 2;
+        string Code = 3;
+    }
+
+    message Account1 {
+        string Email = 1;
+        string FcmID = 2;
+        string GoogleID = 3;
+        string FacebookID = 4;
+        string AppleID = 5;
+        bool IsAD = 6;
+        bool Status = 7;
+    }
+
+    message User1 {
+        string ID = 1;
+        string FirstName = 2;
+        string LastName = 3;
+        string IDNumber = 4;
+        string Phone = 5;
+        string Departement = 6;
+        string Position = 7;
+        string RoleID = 8;
+        string RoleName = 9;
+        string Grade = 10;
+    }
+
+    message AccountUser {
+        Role1 Role = 1;
+        Company1 Company = 2;
+        Account1 Account = 3;
+        User1 User = 4;
+    }
+
+    message Module {
+        string ID = 1;
+        string Name = 2;
+    }
+
+    message Operations {
+        string Url = 1;
+        string Path = 2;
+        string Method = 3;
+        string Name = 4;
+    }
+
+    message Permission {
+        string ID = 1;
+        string RoleID = 2;
+        string Name = 3;
+        Module Module = 4;
+        repeated Operations Operations = 5;
+        repeated Permission Permission = 6;
+    }
+
+    message Accesscontrol {
+        string ID = 1;
+        string RoleID = 2;
+        string RoleName = 3;
+        string CreatedBy = 4;
+        string UpdateBy = 5;
+        string CreatedAt = 6;
+        string UpdateAt = 7;
+        repeated Permission Permission = 8;
+    }
+
+    message Application {
+        string ID = 1;
+        string Name = 2;
+        string Icon = 3;
+        Accesscontrol AccessControl = 4;
+    }
+
+    message Rbac {
+        repeated Application Application = 1;
+    }
+
+    message Data1 {
+        string ID = 1;
+        string Type = 2;
+        string Issuer = 3;
+        Metadata Metadata = 4;
+        string Secret = 5;
+        Token Token = 6;
+        AccountUser User = 7;
+        rbac.RBACResponse RBAC = 8;
+    }
+
+    bool IsSuccess = 1;
+    string Message = 2;
+    string Status = 3;
+    Data1 Data = 4;
+}

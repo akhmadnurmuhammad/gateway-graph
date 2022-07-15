@@ -1,0 +1,103 @@
+syntax = "proto3";
+
+package auth;
+
+option go_package = "xti-gateway-go/proto/authorization/auth";
+import "proto/google/api/annotations.proto";
+
+service Auth {
+	rpc Login(LoginRequest) returns (LoginResponse) {
+		option (google.api.http) = {
+          post: "/api/v1/auth/credential/generate-token"
+          body: "*"
+        };
+	}
+}
+
+message CallRequest {
+	string name = 1;
+}
+
+message CallResponse {
+	string msg = 1;
+}
+
+message ClientStreamRequest {
+	int64 stroke = 1;
+}
+
+message ClientStreamResponse {
+	int64 count = 1;
+}
+
+message ServerStreamRequest {
+	int64 count = 1;
+}
+
+message ServerStreamResponse {
+	int64 count = 1;
+}
+
+message BidiStreamRequest {
+	int64 stroke = 1;
+}
+
+message BidiStreamResponse {
+	int64 stroke = 1;
+}
+
+message LoginRequest {
+	string ClientKey = 1;
+	string SecretKey = 2;
+}
+
+message LoginResponse {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	Account Data = 4;
+}
+
+// Account provided by an auth provider
+message Account {
+	// ID of the account e.g. email
+	string ID = 1;
+	// Type of the account, e.g. service
+	string Type = 2;
+	// Issuer of the account
+	string Issuer = 3;
+	// Any other associated metadata
+	Metadata Metadata = 4;
+	// Scopes the account has access to
+	// repeated Scope Scopes = 5;
+	// Secret for the account, e.g. the password
+	string Secret = 5;
+	// token details
+	Token Token = 6;
+}
+
+message Metadata {
+	string ID = 1;
+	string CompanyID = 2;
+	string CompanyName = 3;
+	string CompanyCode = 4;
+	string ClientKey = 5;
+	string SecretKey = 6;
+	string Platform = 7;
+	string Scope = 8;
+	bool Status = 9;
+	string CreatedAt = 10;
+	string UpdatedAt = 11;
+}
+
+// Token can be short or long lived
+message Token {
+	// The token to be used for accessing resources
+	string AccessToken = 1;
+	// RefreshToken to be used to generate a new token
+	string RefreshToken = 2;
+	// Time of token creation
+	int64 Created = 3;
+	// Time of token expiry
+	int64 Expiry = 4;
+}

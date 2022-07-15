@@ -1,0 +1,47 @@
+directive @Module on FIELD_DEFINITION
+input FetchRequestModuleInput {
+	limit: Int
+	offset: Int
+}
+type FetchResponseModule {
+	isSuccess: Boolean
+	message: String
+	status: Int
+	data: Modules
+}
+input FindByIDModuleRequestInput {
+	iD: String
+}
+type MainResponseModule {
+	isSuccess: Boolean
+	message: String
+	status: Int
+	data: ModuleResponse
+}
+input ModuleRequestInput {
+	iD: String
+	name: String
+	path: String
+}
+type ModuleResponse {
+	iD: String
+	name: String
+	path: String
+	createdBy: String
+	updatedBy: String
+	createdAt: String
+	updatedAt: String
+}
+type Modules {
+	items: [ModuleResponse!]
+}
+type Mutation {
+	moduleStore(in: ModuleRequestInput): MainResponseModule
+	moduleUpdate(in: ModuleRequestInput): MainResponseModule
+	moduleDelete(in: FindByIDModuleRequestInput): MainResponseModule
+	moduleFetch(in: FetchRequestModuleInput): FetchResponseModule
+	moduleFindByID(in: FindByIDModuleRequestInput): MainResponseModule
+}
+type Query {
+	dummy: Boolean
+}

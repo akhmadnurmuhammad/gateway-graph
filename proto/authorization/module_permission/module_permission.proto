@@ -1,0 +1,81 @@
+syntax = "proto3";
+
+package module_permission;
+import "proto/google/api/annotations.proto";
+option go_package = "xti-gateway-go/proto/authorization/module_permission";
+
+
+service ModulePermission {
+    rpc Fetch(FetchRequestModulePermission) returns (FetchResponseModulePermission) {
+		option (google.api.http) = {
+          get: "/api/v1/auth/module-permission/fetch"
+        };
+	}
+	rpc Store(ModulePermissionRequest) returns (MainResponseModulePermission) {
+		option (google.api.http) = {
+          post: "/api/v1/auth/module-permission/store"
+          body: "*"
+        };
+	}
+	rpc FindByID(FindByIDModulePermissionRequest) returns (MainResponseModulePermission) {
+		option (google.api.http) = {
+          get: "/api/v1/auth/module-permission/detail"
+        };
+	}
+	rpc Update(ModulePermissionRequest) returns (MainResponseModulePermission) {
+		option (google.api.http) = {
+          put: "/api/v1/auth/module-permission/update"
+          body: "*"
+        };
+	}
+	rpc Delete(FindByIDModulePermissionRequest) returns (MainResponseModulePermission) {
+		option (google.api.http) = {
+          delete: "/api/v1/auth/module-permission/delete/{ID}"
+        };
+	}
+}
+
+
+message FetchRequestModulePermission {
+	int64 Limit = 1;
+	int64 Offset = 2;
+}
+
+message MainResponseModulePermission {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	ModulePermissionResponse Data = 4;
+}
+
+message FetchResponseModulePermission {
+	bool IsSuccess = 1;
+	string Message = 2;
+	int64 Status = 3;
+	ModulesPermissions Data = 4;
+}
+
+message ModulesPermissions {
+	repeated ModulePermissionResponse Items = 1;
+}
+
+message ModulePermissionResponse {
+    string ID = 1;
+    string PermissionID = 2;
+    string ModuleID = 3;
+    string CreatedBy = 4;
+    string UpdatedBy = 5;
+    string CreatedAt = 6;
+    string UpdatedAt = 7;
+}
+
+message ModulePermissionRequest {
+    string ID = 1;
+    string PermissionID = 2;
+    string ModuleID = 3;
+}
+
+
+message FindByIDModulePermissionRequest {
+	string ID = 1;
+}

@@ -1,0 +1,50 @@
+directive @Operation on FIELD_DEFINITION
+input FetchRequestOperationInput {
+	limit: Int
+	offset: Int
+}
+type FetchResponseOperation {
+	isSuccess: Boolean
+	message: String
+	status: Int
+	data: Operations
+}
+input FindByIDOperationRequestInput {
+	iD: String
+}
+type MainResponseOperation {
+	isSuccess: Boolean
+	message: String
+	status: Int
+	data: OperationResponse
+}
+type Mutation {
+	operationStore(in: OperationRequestInput): MainResponseOperation
+	operationUpdate(in: OperationRequestInput): MainResponseOperation
+	operationDelete(in: FindByIDOperationRequestInput): MainResponseOperation
+}
+input OperationRequestInput {
+	iD: String
+	name: String
+	url: String
+	path: String
+	method: String
+}
+type OperationResponse {
+	iD: String
+	name: String
+	url: String
+	path: String
+	method: String
+	createdBy: String
+	updatedBy: String
+	createdAt: String
+	updatedAt: String
+}
+type Operations {
+	items: [OperationResponse!]
+}
+type Query {
+	operationFetch(in: FetchRequestOperationInput): FetchResponseOperation
+	operationFindByID(in: FindByIDOperationRequestInput): MainResponseOperation
+}
